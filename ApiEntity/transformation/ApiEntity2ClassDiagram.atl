@@ -1,0 +1,208 @@
+-- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
+-- @path API=/ApiEntity/model/apiEntity.ecore
+
+module ApiEntity2ClassDiagram;
+
+create OUT : UML from IN : API;
+
+helper context String def: toUpperFirst() : String =
+	self.substring(1,1).toUpper() + self.substring(2, self.size());
+
+helper context String def: toLowerFirst() : String =
+	self.substring(1,1).toLower() + self.substring(2, self.size());
+
+
+helper context String def: toPascalCase() : String =
+	let parts : Sequence(String) = self.split(' ') in
+	if parts.size() = 0 then
+		''
+	else
+		parts->collect(p | p.toUpperFirst())->flatten()->iterate(s; res: String = '' | res + s)
+	endif;
+
+
+helper context String def: toCamelCase() : String = self.toPascalCase().toLowerFirst();
+
+helper def: getRootPackage() : UML!Package = UML!Package.allInstances().first();
+
+helper context API!Operation def: getMethodPrefix() : String =
+	if self.type = #CREATE then
+		'create'
+	else if self.type = #GET then
+		'get'
+	else if self.type = #UPDATE then
+		'update'
+	else if self.type = #DELETE then
+		'delete'
+	else
+		'unknown' -- fallback/default
+	endif endif endif endif;
+
+lazy rule TransformAttribute {
+	from
+		attribute: API!Attribute
+	to
+		property: UML!Property(
+			name <- attribute.name.toCamelCase() -- TODO: Typ atrybutu
+		)
+}
+
+lazy rule TransformOperation {
+	from
+		operation: API!Operation
+	to
+		uml_operation: UML!Operation(
+			name <- operation.name.toCamelCase() -- TODO: zwracany typ
+		)
+}
+
+
+lazy rule CommonRepositoryMethods {
+	from
+		entity: UML!Class,
+		entity_repository: UML!Class
+	to
+		findAll: UML!Operation (
+			name <- 'findAll',
+			ownedParameter <- Sequence { returnParamList_findAll }
+		),
+		findOne: UML!Operation (
+			name <- 'findOne',
+			ownedParameter <- Sequence { inputParam_findOne, returnParam_findOne }
+		),
+		createNew: UML!Operation(
+			name <- 'create',
+			ownedParameter <- Sequence { returnParam_create, inputParam_create }
+		),
+		update: UML!Operation(
+			name <- 'update',
+			ownedParameter <- Sequence { returnParam_update, inputParam_update }
+		),
+		delete: UML!Operation(
+			name <- 'delete',
+			ownedParameter <- Sequence { returnParam_delete, inputParam_delete }
+		),
+		inputParam_findOne: UML!Parameter (
+			name <- 'id',
+			direction <- #out,
+			-- type <- TODO: UML primitive type
+			lower <- 1,
+			upper <- 1
+		),
+		returnParamList_findAll: UML!Parameter (
+			direction <- #return,
+			type <- entity,
+			lower <- 0,
+			upper <- -1
+		),
+		returnParam_findOne: UML!Parameter (
+			direction <- #return,
+			type <- entity,
+			lower <- 1,
+			upper <- 1
+		),
+		returnParam_create: UML!Parameter (
+			direction <- #return,
+			type <- entity,
+			lower <- 1,
+			upper <- 1
+		),
+		inputParam_create: UML!Parameter (
+			name <- 'autor',
+			direction <- #out, -- TODO: dlaczego nie działa in?
+			type <- entity,
+			lower <- 1,
+			upper <- 1
+		),
+		returnParam_update: UML!Parameter (
+			direction <- #return,
+			type <- entity,
+			lower <- 1,
+			upper <- 1
+		),
+		inputParam_update: UML!Parameter (
+			name <- 'autor',
+			direction <- #out,
+			type <- entity,
+			lower <- 1,
+			upper <- 1
+		),
+		returnParam_delete: UML!Parameter (
+			direction <- #return,
+			type <- entity,
+			lower <- 1,
+			upper <- 1
+		),
+		inputParam_delete: UML!Parameter (
+			name <- 'autor',
+			direction <- #out,
+			type <- entity,
+			lower <- 1,
+			upper <- 1
+		)
+	do {
+		entity_repository.ownedOperation <- Sequence { findAll, findOne, createNew, update, delete };
+	}
+}
+
+rule TransformApi {
+	from
+		a : API!Api
+	to
+		p : UML!Package (
+			name <- a.name
+		)
+}
+
+rule TransformEntity {
+	from
+		entity : API!Entity
+	to
+		entity_class : UML!Class(
+			name <- entity.name.toPascalCase(),
+			ownedAttribute <- Sequence {id_attr}
+		),
+		id_attr: UML!Property(
+			name <- 'id'
+			-- TODO: Primitive INT type
+		),
+		entity_controller : UML!Class(
+			name <- entity.name.toPascalCase() + 'Controller',
+			ownedAttribute <- Sequence {controller_repository_controller_end}
+		),
+		entity_repository : UML!Class(
+			name <- entity.name.toPascalCase() + 'Repository'
+		),
+		repo_usage : UML!Usage (
+			client <- Sequence{ entity_repository },
+			supplier <- Sequence{ entity_class }
+		),
+		controller_repository_association : UML!Association (
+			memberEnd <- Sequence { controller_repository_controller_end, controller_repository_repository_end },
+			ownedEnd <- Sequence { controller_repository_repository_end }
+		),
+		controller_repository_controller_end : UML!Property (
+			name <- entity.name.toCamelCase() + 'Repository',
+			type <- entity_repository,
+			visibility <- #private,
+			aggregation <- #shared
+		),
+		controller_repository_repository_end : UML!Property (
+			type <- entity_controller,
+			visibility <- #private
+		)
+		do {
+			thisModule.getRootPackage().packagedElement <- Sequence {
+				entity_class,
+				entity_controller,
+				entity_repository,
+				repo_usage,
+				controller_repository_association
+			};
+			entity_class.ownedAttribute <- entity.attribute->collect(attr | thisModule.TransformAttribute(attr));
+			entity_controller.ownedOperation <- entity.operation->collect(op | thisModule.TransformOperation(op));
+			thisModule.CommonRepositoryMethods(entity_class, entity_repository);
+		}
+}
+
+

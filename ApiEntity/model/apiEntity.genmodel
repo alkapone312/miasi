@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/ApiEntity/src" modelPluginID="ApiEntity" modelName="ApiEntity"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="21.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>apiEntity.ecore</foreignModel>
+  <genPackages prefix="ApiEntity" disposableProviderFactory="true" ecorePackage="apiEntity.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="apiEntity.ecore#//OperationType">
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//OperationType/GET"/>
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//OperationType/CREATE"/>
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//OperationType/UPDATE"/>
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//OperationType/DELETE"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="apiEntity.ecore#//AttributeType">
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//AttributeType/STRING"/>
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//AttributeType/NUMBER"/>
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//AttributeType/DATE"/>
+    </genEnums>
+    <genClasses ecoreClass="apiEntity.ecore#//Entity">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Entity/operation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Entity/attribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Entity/name"/>
+    </genClasses>
+    <genClasses ecoreClass="apiEntity.ecore#//Attribute">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Attribute/entity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Attribute/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Attribute/type"/>
+    </genClasses>
+    <genClasses ecoreClass="apiEntity.ecore#//Operation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Operation/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Operation/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Operation/entity"/>
+    </genClasses>
+    <genClasses ecoreClass="apiEntity.ecore#//Api">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Api/entity"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Api/name"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

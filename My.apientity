@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<apiEntity:Api xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:apiEntity="http://www.example.org/apiEntity" name="Ksiegarnia">
+  <entity name="Ksiazka">
+    <operation name="Pobierz ksiazki"/>
+    <operation name="Pobierz ksiazke"/>
+    <operation type="CREATE" name="Dodaj ksiazke"/>
+    <operation type="DELETE" name="Usun ksiazke"/>
+    <operation name="Pobierz ksiazki po autorze"/>
+    <attribute name="Nazwa"/>
+    <attribute name="Autor"/>
+  </entity>
+  <entity name="Autor">
+    <operation name="Pobierz autorow"/>
+    <operation name="Pobierz autora"/>
+    <operation type="CREATE" name="Dodaj autora"/>
+    <operation type="DELETE" name="Usun autora"/>
+    <attribute name="Imie"/>
+    <attribute name="Nazwisko"/>
+    <attribute name="Data urodzenia" type="DATE"/>
+  </entity>
+</apiEntity:Api>
