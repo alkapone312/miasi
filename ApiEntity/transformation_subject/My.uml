@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_zIsB0DyOEfCc2JPDvXcYkQ" name="Ksiegarnia">
+  <packagedElement xmi:type="uml:Class" xmi:id="_zI0ksDyOEfCc2JPDvXcYkQ" name="Ksiazka">
+    <ownedAttribute xmi:id="_zI6EQDyOEfCc2JPDvXcYkQ" name="id"/>
+    <ownedAttribute xmi:id="_zJTs4DyOEfCc2JPDvXcYkQ" name="nazwa"/>
+    <ownedAttribute xmi:id="_zJTs4TyOEfCc2JPDvXcYkQ" name="autor"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zI6EQTyOEfCc2JPDvXcYkQ" name="KsiazkaController">
+    <ownedAttribute xmi:id="_zI9uoTyOEfCc2JPDvXcYkQ" name="ksiazkaRepository" visibility="private" type="_zI6EQjyOEfCc2JPDvXcYkQ" aggregation="shared" association="_zI9uoDyOEfCc2JPDvXcYkQ"/>
+    <ownedOperation xmi:id="_zJXXQDyOEfCc2JPDvXcYkQ" name="pobierzKsiazki"/>
+    <ownedOperation xmi:id="_zJX-UDyOEfCc2JPDvXcYkQ" name="pobierzKsiazke"/>
+    <ownedOperation xmi:id="_zJX-UTyOEfCc2JPDvXcYkQ" name="dodajKsiazke"/>
+    <ownedOperation xmi:id="_zJYlYDyOEfCc2JPDvXcYkQ" name="usunKsiazke"/>
+    <ownedOperation xmi:id="_zJYlYTyOEfCc2JPDvXcYkQ" name="pobierzKsiazkiPoAutorze"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zI6EQjyOEfCc2JPDvXcYkQ" name="KsiazkaRepository">
+    <ownedOperation xmi:id="_zJZMcDyOEfCc2JPDvXcYkQ" name="findAll">
+      <ownedParameter xmi:id="_zJcPwTyOEfCc2JPDvXcYkQ" type="_zI0ksDyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJghMTyOEfCc2JPDvXcYkQ"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJhIQDyOEfCc2JPDvXcYkQ" value="*"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_zJZMcTyOEfCc2JPDvXcYkQ" name="findOne">
+      <ownedParameter xmi:id="_zJcPwDyOEfCc2JPDvXcYkQ" name="id" direction="out">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJf6IDyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJghMDyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+      <ownedParameter xmi:id="_zJcPwjyOEfCc2JPDvXcYkQ" type="_zI0ksDyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJhIQTyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJhIQjyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_zJZMcjyOEfCc2JPDvXcYkQ" name="create">
+      <ownedParameter xmi:id="_zJcPwzyOEfCc2JPDvXcYkQ" type="_zI0ksDyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJhIQzyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJhIRDyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+      <ownedParameter xmi:id="_zJcPxDyOEfCc2JPDvXcYkQ" name="autor" type="_zI0ksDyOEfCc2JPDvXcYkQ" direction="out">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJhvUDyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJhvUTyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_zJZMczyOEfCc2JPDvXcYkQ" name="update">
+      <ownedParameter xmi:id="_zJcPxTyOEfCc2JPDvXcYkQ" type="_zI0ksDyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJhvUjyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJhvUzyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+      <ownedParameter xmi:id="_zJcPxjyOEfCc2JPDvXcYkQ" name="autor" type="_zI0ksDyOEfCc2JPDvXcYkQ" direction="out">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJhvVDyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJhvVTyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_zJZMdDyOEfCc2JPDvXcYkQ" name="delete">
+      <ownedParameter xmi:id="_zJcPxzyOEfCc2JPDvXcYkQ" type="_zI0ksDyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJiWYDyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJiWYTyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+      <ownedParameter xmi:id="_zJcPyDyOEfCc2JPDvXcYkQ" name="autor" type="_zI0ksDyOEfCc2JPDvXcYkQ" direction="out">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJiWYjyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJiWYzyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_zI8ggDyOEfCc2JPDvXcYkQ" client="_zI6EQjyOEfCc2JPDvXcYkQ" supplier="_zI0ksDyOEfCc2JPDvXcYkQ"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_zI9uoDyOEfCc2JPDvXcYkQ" memberEnd="_zI9uoTyOEfCc2JPDvXcYkQ _zI9uojyOEfCc2JPDvXcYkQ">
+    <ownedEnd xmi:id="_zI9uojyOEfCc2JPDvXcYkQ" visibility="private" type="_zI6EQTyOEfCc2JPDvXcYkQ" association="_zI9uoDyOEfCc2JPDvXcYkQ"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zI9uozyOEfCc2JPDvXcYkQ" name="Autor">
+    <ownedAttribute xmi:id="_zI-VsDyOEfCc2JPDvXcYkQ" name="id"/>
+    <ownedAttribute xmi:id="_zJkyoDyOEfCc2JPDvXcYkQ" name="imie"/>
+    <ownedAttribute xmi:id="_zJkyoTyOEfCc2JPDvXcYkQ" name="nazwisko"/>
+    <ownedAttribute xmi:id="_zJlZsDyOEfCc2JPDvXcYkQ" name="dataUrodzenia"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zI-VsTyOEfCc2JPDvXcYkQ" name="AutorController">
+    <ownedAttribute xmi:id="_zI-VtTyOEfCc2JPDvXcYkQ" name="autorRepository" visibility="private" type="_zI-VsjyOEfCc2JPDvXcYkQ" aggregation="shared" association="_zI-VtDyOEfCc2JPDvXcYkQ"/>
+    <ownedOperation xmi:id="_zJlZsTyOEfCc2JPDvXcYkQ" name="pobierzAutorow"/>
+    <ownedOperation xmi:id="_zJmAwDyOEfCc2JPDvXcYkQ" name="pobierzAutora"/>
+    <ownedOperation xmi:id="_zJmAwTyOEfCc2JPDvXcYkQ" name="dodajAutora"/>
+    <ownedOperation xmi:id="_zJmAwjyOEfCc2JPDvXcYkQ" name="usunAutora"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_zI-VsjyOEfCc2JPDvXcYkQ" name="AutorRepository">
+    <ownedOperation xmi:id="_zJmn0DyOEfCc2JPDvXcYkQ" name="findAll">
+      <ownedParameter xmi:id="_zJmn1jyOEfCc2JPDvXcYkQ" type="_zI9uozyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJn18jyOEfCc2JPDvXcYkQ"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJn18zyOEfCc2JPDvXcYkQ" value="*"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_zJmn0TyOEfCc2JPDvXcYkQ" name="findOne">
+      <ownedParameter xmi:id="_zJmn1TyOEfCc2JPDvXcYkQ" name="id" direction="out">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJn18DyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJn18TyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+      <ownedParameter xmi:id="_zJmn1zyOEfCc2JPDvXcYkQ" type="_zI9uozyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJn19DyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJodADyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_zJmn0jyOEfCc2JPDvXcYkQ" name="create">
+      <ownedParameter xmi:id="_zJmn2DyOEfCc2JPDvXcYkQ" type="_zI9uozyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJodATyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJodAjyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+      <ownedParameter xmi:id="_zJmn2TyOEfCc2JPDvXcYkQ" name="autor" type="_zI9uozyOEfCc2JPDvXcYkQ" direction="out">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJodAzyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJodBDyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_zJmn0zyOEfCc2JPDvXcYkQ" name="update">
+      <ownedParameter xmi:id="_zJmn2jyOEfCc2JPDvXcYkQ" type="_zI9uozyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJpEEDyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJpEETyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+      <ownedParameter xmi:id="_zJmn2zyOEfCc2JPDvXcYkQ" name="autor" type="_zI9uozyOEfCc2JPDvXcYkQ" direction="out">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJpEEjyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJpEEzyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+    <ownedOperation xmi:id="_zJmn1DyOEfCc2JPDvXcYkQ" name="delete">
+      <ownedParameter xmi:id="_zJmn3DyOEfCc2JPDvXcYkQ" type="_zI9uozyOEfCc2JPDvXcYkQ" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJpEFDyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJpEFTyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+      <ownedParameter xmi:id="_zJmn3TyOEfCc2JPDvXcYkQ" name="autor" type="_zI9uozyOEfCc2JPDvXcYkQ" direction="out">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_zJpEFjyOEfCc2JPDvXcYkQ" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_zJprIDyOEfCc2JPDvXcYkQ" value="1"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Usage" xmi:id="_zI-VszyOEfCc2JPDvXcYkQ" client="_zI-VsjyOEfCc2JPDvXcYkQ" supplier="_zI9uozyOEfCc2JPDvXcYkQ"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_zI-VtDyOEfCc2JPDvXcYkQ" memberEnd="_zI-VtTyOEfCc2JPDvXcYkQ _zI-VtjyOEfCc2JPDvXcYkQ">
+    <ownedEnd xmi:id="_zI-VtjyOEfCc2JPDvXcYkQ" visibility="private" type="_zI-VsTyOEfCc2JPDvXcYkQ" association="_zI-VtDyOEfCc2JPDvXcYkQ"/>
+  </packagedElement>
+</uml:Package>

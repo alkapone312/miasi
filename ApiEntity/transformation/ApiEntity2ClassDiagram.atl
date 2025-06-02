@@ -84,7 +84,7 @@ lazy rule CommonRepositoryMethods {
 		),
 		inputParam_findOne: UML!Parameter (
 			name <- 'id',
-			direction <- #out,
+			direction <- 'in',
 			-- type <- TODO: UML primitive type
 			lower <- 1,
 			upper <- 1
@@ -109,7 +109,7 @@ lazy rule CommonRepositoryMethods {
 		),
 		inputParam_create: UML!Parameter (
 			name <- 'autor',
-			direction <- #out, -- TODO: dlaczego nie działa in?
+			direction <- 'in',
 			type <- entity,
 			lower <- 1,
 			upper <- 1
@@ -122,7 +122,7 @@ lazy rule CommonRepositoryMethods {
 		),
 		inputParam_update: UML!Parameter (
 			name <- 'autor',
-			direction <- #out,
+			direction <- 'in',
 			type <- entity,
 			lower <- 1,
 			upper <- 1
@@ -135,7 +135,7 @@ lazy rule CommonRepositoryMethods {
 		),
 		inputParam_delete: UML!Parameter (
 			name <- 'autor',
-			direction <- #out,
+			direction <- 'in',
 			type <- entity,
 			lower <- 1,
 			upper <- 1
@@ -168,18 +168,29 @@ rule TransformEntity {
 		),
 		entity_controller : UML!Class(
 			name <- entity.name.toPascalCase() + 'Controller',
-			ownedAttribute <- Sequence {controller_repository_controller_end}
+			ownedAttribute <- Sequence {
+					controller_repository_controller_end
+				}
 		),
 		entity_repository : UML!Class(
 			name <- entity.name.toPascalCase() + 'Repository'
 		),
 		repo_usage : UML!Usage (
-			client <- Sequence{ entity_repository },
-			supplier <- Sequence{ entity_class }
+			client <- Sequence{ 
+				entity_repository 
+			},
+			supplier <- Sequence{ 
+				entity_class 
+			}
 		),
 		controller_repository_association : UML!Association (
-			memberEnd <- Sequence { controller_repository_controller_end, controller_repository_repository_end },
-			ownedEnd <- Sequence { controller_repository_repository_end }
+			memberEnd <- Sequence { 
+				controller_repository_controller_end, 
+				controller_repository_repository_end 
+			},
+			ownedEnd <- Sequence { 
+				controller_repository_repository_end 
+			}
 		),
 		controller_repository_controller_end : UML!Property (
 			name <- entity.name.toCamelCase() + 'Repository',
@@ -199,8 +210,10 @@ rule TransformEntity {
 				repo_usage,
 				controller_repository_association
 			};
-			entity_class.ownedAttribute <- entity.attribute->collect(attr | thisModule.TransformAttribute(attr));
-			entity_controller.ownedOperation <- entity.operation->collect(op | thisModule.TransformOperation(op));
+			entity_class.ownedAttribute <- entity.attribute
+				->collect(attr | thisModule.TransformAttribute(attr));
+			entity_controller.ownedOperation <- entity.operation
+				->collect(op | thisModule.TransformOperation(op));
 			thisModule.CommonRepositoryMethods(entity_class, entity_repository);
 		}
 }
