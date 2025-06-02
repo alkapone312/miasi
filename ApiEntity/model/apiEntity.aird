@@ -3,7 +3,6 @@
   <viewpoint:DAnalysis uid="_2TFvQDcSEfCJaKrEcrFB-g" selectedViews="_2_lB0DcSEfCJaKrEcrFB-g" version="15.4.1.202403191723">
     <semanticResources>apiEntity.ecore</semanticResources>
     <semanticResources>../transformation/ApiEntity2ClassDiagram.atl</semanticResources>
-    <semanticResources>../transformation_subject/My.uml</semanticResources>
     <semanticResources>apiEntity.genmodel</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_2_lB0DcSEfCJaKrEcrFB-g">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>

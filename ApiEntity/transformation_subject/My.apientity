@@ -16,6 +16,6 @@
     <operation type="DELETE" name="Usun autora"/>
     <attribute name="Imie"/>
     <attribute name="Nazwisko"/>
-    <attribute name="Data urodzenia" type="DATE"/>
+    <attribute name="Data urodzenia"/>
   </entity>
 </apiEntity:Api>
