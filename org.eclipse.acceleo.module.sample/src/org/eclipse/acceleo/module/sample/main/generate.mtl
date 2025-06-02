@@ -1,0 +1,39 @@
+[comment encoding = UTF-8 /]
+[module generate('http://www.eclipse.org/uml2/5.0.0/UML')]
+
+[template public generateElement(aClass : Class)]
+[comment @main/]
+[file (aClass.name.concat('.java'), false, 'UTF-8')]
+
+public class [aClass.name /] {
+
+    [comment -- Atrybuty jako pola klasy /]
+    [for (attr : Property | aClass.ownedAttribute)]
+    private String [attr.name /];
+    [/for]
+
+    [comment -- Konstruktor domyślny /]
+    public [aClass.name /]() {
+    }
+
+    [comment -- Gettery i Settery /]
+    [for (attr : Property | aClass.ownedAttribute)]
+    public String get[attr.name.toUpperFirst() /]() {
+        return this.[attr.name /];
+    }
+
+    public void set[attr.name.toUpperFirst() /](String [attr.name /]) {
+        this.[attr.name /] = [attr.name /];
+    }
+    [/for]
+
+    [comment -- Operacje jako metody /]
+    [for (op : Operation | aClass.ownedOperation)]
+    public void [op.name /]() {
+        // TODO: implement
+    }
+    [/for]
+
+}
+[/file]
+[/template]

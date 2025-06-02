@@ -4,3 +4,7 @@
 /ApiEntity.tests/
 /ApiEntity/src
 /ApiEntity/bin
+org.eclipse.acceleo.module.sample/generated
+org.eclipse.acceleo.module.sample/bin
+
+

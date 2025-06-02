@@ -4,6 +4,7 @@
     <semanticResources>apiEntity.ecore</semanticResources>
     <semanticResources>../transformation/ApiEntity2ClassDiagram.atl</semanticResources>
     <semanticResources>apiEntity.genmodel</semanticResources>
+    <semanticResources>../transformation_subject/My.uml</semanticResources>
     <ownedViews xmi:type="viewpoint:DView" uid="_2_lB0DcSEfCJaKrEcrFB-g">
       <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
       <ownedRepresentationDescriptors xmi:type="viewpoint:DRepresentationDescriptor" uid="_3BKWMDcSEfCJaKrEcrFB-g" name="apiEntity" repPath="#_3AfAwDcSEfCJaKrEcrFB-g" changeId="1748885569651">
