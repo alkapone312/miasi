@@ -4,39 +4,55 @@
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
     complianceLevel="21.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
   <foreignModel>apiEntity.ecore</foreignModel>
-  <genPackages prefix="ApiEntity" disposableProviderFactory="true" ecorePackage="apiEntity.ecore#/">
+  <genPackages prefix="ApiEntity" disposableProviderFactory="true" childCreationExtenders="true"
+      ecorePackage="apiEntity.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="apiEntity.ecore#//OperationType">
       <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//OperationType/GET"/>
       <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//OperationType/CREATE"/>
       <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//OperationType/UPDATE"/>
       <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//OperationType/DELETE"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="apiEntity.ecore#//Multiplicity">
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//Multiplicity/ONE"/>
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//Multiplicity/OPTIONAL"/>
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//Multiplicity/MULTIPLE"/>
+      <genEnumLiterals ecoreEnumLiteral="apiEntity.ecore#//Multiplicity/NONE"/>
+    </genEnums>
     <genClasses ecoreClass="apiEntity.ecore#//Entity">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Entity/operation"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Entity/attribute"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Entity/name"/>
     </genClasses>
     <genClasses ecoreClass="apiEntity.ecore#//Attribute">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Attribute/entity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Attribute/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Attribute/settable"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Attribute/gettable"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Attribute/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Attribute/multiplicity"/>
     </genClasses>
     <genClasses ecoreClass="apiEntity.ecore#//Operation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Operation/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Operation/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Operation/entity"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Operation/returnType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Operation/parameter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Operation/multiplicity"/>
     </genClasses>
     <genClasses ecoreClass="apiEntity.ecore#//Api">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Api/entity"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Api/name"/>
+      <genFeatures children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Api/primitivetype"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Api/object"/>
     </genClasses>
     <genClasses ecoreClass="apiEntity.ecore#//Parameter">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Parameter/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference apiEntity.ecore#//Parameter/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//Parameter/multiplicity"/>
     </genClasses>
     <genClasses image="false" ecoreClass="apiEntity.ecore#//ApiType"/>
+    <genClasses ecoreClass="apiEntity.ecore#//PrimitiveType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//PrimitiveType/name"/>
+    </genClasses>
+    <genClasses ecoreClass="apiEntity.ecore#//ValueObject">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference apiEntity.ecore#//ValueObject/attribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute apiEntity.ecore#//ValueObject/name"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
