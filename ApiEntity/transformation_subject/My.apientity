@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <apiEntity:Api xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:apiEntity="http://www.example.org/apiEntity">
   <primitivetype name="String"/>
-  <primitivetype name="Int"/>
-  <primitivetype name="Float"/>
+  <primitivetype name="Integer"/>
+  <primitivetype name="Real"/>
+  <primitivetype name="Void"/>
   <object xsi:type="apiEntity:Entity" name="Ksiazka">
     <attribute name="Nazwa" type="//@primitivetype.0"/>
     <attribute name="Autor" type="//@object.1"/>
@@ -13,10 +14,10 @@
     <operation name="Pobierz ksiazki po autorze" returnType="//@object.0" multiplicity="MULTIPLE">
       <parameter name="autor" type="//@primitivetype.1"/>
     </operation>
-    <operation type="CREATE" name="Dodaj ksiazke" multiplicity="NONE">
+    <operation type="CREATE" name="Dodaj ksiazke" returnType="//@primitivetype.3" multiplicity="NONE">
       <parameter name="ksiazka" type="//@object.0"/>
     </operation>
-    <operation type="DELETE" name="Usun ksiazke" multiplicity="NONE">
+    <operation type="DELETE" name="Usun ksiazke" returnType="//@primitivetype.3" multiplicity="NONE">
       <parameter name="id" type="//@primitivetype.1"/>
     </operation>
   </object>
@@ -25,15 +26,21 @@
     <attribute name="Nazwisko" type="//@primitivetype.0"/>
     <attribute name="Adres" type="//@object.2" multiplicity="OPTIONAL"/>
     <operation name="Pobierz autorow" returnType="//@object.1" multiplicity="MULTIPLE"/>
-    <operation name="Pobierz autora" returnType="//@object.1" multiplicity="OPTIONAL"/>
-    <operation type="CREATE" name="Dodaj autora" multiplicity="NONE"/>
-    <operation type="DELETE" name="Usun autora" multiplicity="NONE"/>
+    <operation name="Pobierz autora" returnType="//@object.1" multiplicity="OPTIONAL">
+      <parameter name="id" type="//@primitivetype.1"/>
+    </operation>
+    <operation type="CREATE" name="Dodaj autora" returnType="//@primitivetype.3" multiplicity="NONE">
+      <parameter name="autor" type="//@object.1"/>
+    </operation>
+    <operation type="DELETE" name="Usun autora" returnType="//@primitivetype.3" multiplicity="NONE">
+      <parameter name="id" type="//@primitivetype.1"/>
+    </operation>
   </object>
   <object name="Adres">
     <attribute name="Panstwo" type="//@primitivetype.0"/>
     <attribute name="Miasto" type="//@primitivetype.0"/>
     <attribute name="Kod pocztowy" type="//@primitivetype.0"/>
     <attribute name="Numer budynku" type="//@primitivetype.1"/>
-    <attribute name="Numer mieszkania" type="//@primitivetype.0" multiplicity="OPTIONAL"/>
+    <attribute name="Numer mieszkania" type="//@primitivetype.1" multiplicity="OPTIONAL"/>
   </object>
 </apiEntity:Api>

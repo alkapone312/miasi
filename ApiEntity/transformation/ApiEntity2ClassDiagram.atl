@@ -3,13 +3,40 @@
 
 module ApiEntity2ClassDiagram;
 
-create OUT : UML from IN : API;
+create OUT : UML from IN : API, PT : UML;
+
+helper def : vo2class : Map(API!ValueObject, UML!Class) = Map {};
+
+helper def : IntegerType : UML!PrimitiveType =
+	UML!PrimitiveType.allInstances()->any(p | p.name = 'Integer');
+
+helper def : lowerBoundForMultiplicity(multiplicity: API!Multiplicity): Integer = 
+	if multiplicity = #ONE then
+		1
+	else 
+		0
+	endif;
+
+helper def : upperBoundForMultiplicity(multiplicity: API!Multiplicity): Integer = 
+	if multiplicity = #ONE or multiplicity = #OPTIONAL then
+		1
+	else
+		if multiplicity = #MULTIPLE then
+		  -1
+		else
+          0
+		endif
+	endif;
 
 helper context String def: toUpperFirst() : String =
 	self.substring(1,1).toUpper() + self.substring(2, self.size());
 
 helper context String def: toLowerFirst() : String =
 	self.substring(1,1).toLower() + self.substring(2, self.size());
+
+helper context String def: normalize() : String = 
+	self.toPascalCase().toLower();
+
 
 
 helper context String def: toPascalCase() : String =
@@ -19,6 +46,26 @@ helper context String def: toPascalCase() : String =
 	else
 		parts->collect(p | p.toUpperFirst())->flatten()->iterate(s; res: String = '' | res + s)
 	endif;
+
+helper def : getUmlPrimitiveType(p : API!PrimitiveType) : UML!PrimitiveType =
+  UML!PrimitiveType.allInstances()->any(t | t.name = p.name);
+
+helper def : getUmlClassFromValueObject(v : API!ValueObject) : UML!Class =
+  thisModule.resolveTemp(v, 'object_class');
+
+helper def : getDefaultUmlPrimitiveType() : UML!PrimitiveType =
+  UML!PrimitiveType.allInstances()->any(p | p.name = 'Integer');
+
+helper context API!ApiType def: getUmlType() : UML!Type =
+  if self.oclIsKindOf(API!PrimitiveType) then
+    thisModule.getUmlPrimitiveType(self)
+  else 
+  	if self.oclIsKindOf(API!ValueObject) then
+	  thisModule.getUmlClassFromValueObject(self)
+	else
+	  thisModule.getDefaultUmlPrimitiveType()
+    endif
+endif;
 
 
 helper context String def: toCamelCase() : String = self.toPascalCase().toLowerFirst();
@@ -43,7 +90,10 @@ lazy rule TransformAttribute {
 		attribute: API!Attribute
 	to
 		property: UML!Property(
-			name <- attribute.name.toCamelCase() -- TODO: Typ atrybutu
+			name <- attribute.name.toCamelCase(),
+			type <-  attribute.type.getUmlType(),
+			lower <- thisModule.lowerBoundForMultiplicity(attribute.multiplicity),
+			upper <- thisModule.upperBoundForMultiplicity(attribute.multiplicity)
 		)
 }
 
@@ -52,7 +102,14 @@ lazy rule TransformOperation {
 		operation: API!Operation
 	to
 		uml_operation: UML!Operation(
-			name <- operation.name.toCamelCase() -- TODO: zwracany typ
+			name <- operation.name.toCamelCase(),
+			ownedParameter <- Sequence { returnParam }
+		),
+		returnParam: UML!Parameter(
+			direction <- #return,
+			type <- operation.returnType.getUmlType(),
+			lower <- thisModule.lowerBoundForMultiplicity(operation.multiplicity),
+			upper <- thisModule.upperBoundForMultiplicity(operation.multiplicity)
 		)
 }
 
@@ -158,13 +215,13 @@ rule TransformEntity {
 	from
 		entity : API!Entity
 	to
-		entity_class : UML!Class(
+		object_class : UML!Class(
 			name <- entity.name.toPascalCase(),
 			ownedAttribute <- Sequence {id_attr}
 		),
 		id_attr: UML!Property(
-			name <- 'id'
-			-- TODO: Primitive INT type
+			name <- 'id',
+			type <- thisModule.IntegerType
 		),
 		entity_controller : UML!Class(
 			name <- entity.name.toPascalCase() + 'Controller',
@@ -180,7 +237,7 @@ rule TransformEntity {
 				entity_repository 
 			},
 			supplier <- Sequence{ 
-				entity_class 
+				object_class 
 			}
 		),
 		controller_repository_association : UML!Association (
@@ -204,17 +261,17 @@ rule TransformEntity {
 		)
 		do {
 			thisModule.getRootPackage().packagedElement <- Sequence {
-				entity_class,
+				object_class,
 				entity_controller,
 				entity_repository,
 				repo_usage,
 				controller_repository_association
 			};
-			entity_class.ownedAttribute <- entity.attribute
+			object_class.ownedAttribute <- entity.attribute
 				->collect(attr | thisModule.TransformAttribute(attr));
 			entity_controller.ownedOperation <- entity.operation
 				->collect(op | thisModule.TransformOperation(op));
-			thisModule.CommonRepositoryMethods(entity_class, entity_repository);
+			thisModule.CommonRepositoryMethods(object_class, entity_repository);
 		}
 }
 
