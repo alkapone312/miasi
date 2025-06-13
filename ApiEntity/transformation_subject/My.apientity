@@ -37,10 +37,10 @@
     </operation>
   </object>
   <object name="Adres">
-    <attribute name="Panstwo" type="//@primitivetype.0"/>
-    <attribute name="Miasto" type="//@primitivetype.0"/>
-    <attribute name="Kod pocztowy" type="//@primitivetype.0"/>
-    <attribute name="Numer budynku" type="//@primitivetype.1"/>
-    <attribute name="Numer mieszkania" type="//@primitivetype.1" multiplicity="OPTIONAL"/>
+    <attribute name="Panstwo" settable="true" type="//@primitivetype.0"/>
+    <attribute name="Miasto" settable="true" type="//@primitivetype.0"/>
+    <attribute name="Kod pocztowy" settable="true" type="//@primitivetype.0"/>
+    <attribute name="Numer budynku" settable="true" type="//@primitivetype.1"/>
+    <attribute name="Numer mieszkania" settable="true" type="//@primitivetype.1" multiplicity="OPTIONAL"/>
   </object>
 </apiEntity:Api>

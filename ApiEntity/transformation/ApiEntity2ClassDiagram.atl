@@ -5,8 +5,6 @@ module ApiEntity2ClassDiagram;
 
 create OUT : UML from IN : API, PT : UML;
 
-helper def : vo2class : Map(API!ValueObject, UML!Class) = Map {};
-
 helper def : IntegerType : UML!PrimitiveType =
 	UML!PrimitiveType.allInstances()->any(p | p.name = 'Integer');
 
@@ -93,7 +91,8 @@ lazy rule TransformAttribute {
 			name <- attribute.name.toCamelCase(),
 			type <-  attribute.type.getUmlType(),
 			lower <- thisModule.lowerBoundForMultiplicity(attribute.multiplicity),
-			upper <- thisModule.upperBoundForMultiplicity(attribute.multiplicity)
+			upper <- thisModule.upperBoundForMultiplicity(attribute.multiplicity),
+			visibility <- #private
 		)
 }
 
@@ -111,6 +110,47 @@ lazy rule TransformOperation {
 			lower <- thisModule.lowerBoundForMultiplicity(operation.multiplicity),
 			upper <- thisModule.upperBoundForMultiplicity(operation.multiplicity)
 		)
+}
+
+lazy rule CreateGetter {
+	from 
+		class: UML!Class,
+		attr: API!Attribute
+	to
+		uml_operation: UML!Operation(
+			name <- 'get' + attr.name.toPascalCase(),
+			ownedParameter <- Sequence { returnParam }
+		),
+		returnParam: UML!Parameter(
+			direction <- #return,
+			type <- attr.type.getUmlType(),
+			lower <- thisModule.lowerBoundForMultiplicity(attr.multiplicity),
+			upper <- thisModule.upperBoundForMultiplicity(attr.multiplicity)
+		)
+	do {
+		class.ownedOperation <- Sequence {uml_operation};	
+	}
+}
+
+lazy rule CreateSetter {
+	from 
+		class: UML!Class,
+		attr: API!Attribute
+	to
+		uml_operation: UML!Operation(
+			name <- 'set' + attr.name.toPascalCase(),
+			ownedParameter <- Sequence { inParam }
+		),
+		inParam: UML!Parameter(
+			direction <- 'in',
+			name <- attr.name.toCamelCase(),
+			type <- attr.type.getUmlType(),
+			lower <- thisModule.lowerBoundForMultiplicity(attr.multiplicity),
+			upper <- thisModule.upperBoundForMultiplicity(attr.multiplicity)
+		)
+	do {
+		class.ownedOperation <- Sequence {uml_operation};	
+	}
 }
 
 
@@ -142,7 +182,7 @@ lazy rule CommonRepositoryMethods {
 		inputParam_findOne: UML!Parameter (
 			name <- 'id',
 			direction <- 'in',
-			-- type <- TODO: UML primitive type
+			type <- entity,
 			lower <- 1,
 			upper <- 1
 		),
@@ -155,7 +195,7 @@ lazy rule CommonRepositoryMethods {
 		returnParam_findOne: UML!Parameter (
 			direction <- #return,
 			type <- entity,
-			lower <- 1,
+			lower <- 0,
 			upper <- 1
 		),
 		returnParam_create: UML!Parameter (
@@ -202,6 +242,38 @@ lazy rule CommonRepositoryMethods {
 	}
 }
 
+lazy rule PropertyToParameter {
+	from prop: UML!Property
+	to param: UML!Parameter(
+		name <- prop.name,
+		type <- prop.type,
+		lower <- prop.lower,
+		upper <- prop.upper
+	)
+}
+
+lazy rule AllArgConstructor {
+	from class: UML!Class
+	to operation: UML!Operation (
+		name <- class.name,
+		ownedParameter <- Sequence {}
+	)
+	do {
+		operation.ownedParameter <- class.ownedAttribute->collect(attr | thisModule.PropertyToParameter(attr));
+		class.ownedOperation <- Sequence {operation};
+	}
+}
+
+lazy rule NoArgConstructor {
+	from class: UML!Class
+	to operation: UML!Operation (
+		name <- class.name
+	)
+	do {
+		class.ownedOperation <- Sequence {operation};
+	}
+}
+
 rule TransformApi {
 	from
 		a : API!Api
@@ -211,23 +283,52 @@ rule TransformApi {
 		)
 }
 
+rule TransformValueObject {
+	from
+		vo: API!ValueObject(vo.oclIsTypeOf(API!ValueObject))
+	to
+		object_class: UML!Class (
+			name <- vo.name.toPascalCase()
+		)
+	do {
+		thisModule.getRootPackage().packagedElement <- object_class;
+		object_class.ownedAttribute <- vo.attribute
+			->collect(attr | thisModule.TransformAttribute(attr));
+		thisModule.AllArgConstructor(object_class);
+		object_class.ownedOperation <- vo.attribute
+			->select(attr | attr.gettable)->collect(attr | thisModule.CreateGetter(object_class, attr));
+		object_class.ownedOperation <- vo.attribute
+			->select(attr | attr.settable)->collect(attr | thisModule.CreateSetter(object_class, attr));
+	}
+}
+
 rule TransformEntity {
 	from
-		entity : API!Entity
+		entity : API!Entity(entity.oclIsTypeOf(API!Entity))
 	to
 		object_class : UML!Class(
 			name <- entity.name.toPascalCase(),
-			ownedAttribute <- Sequence {id_attr}
+			ownedAttribute <- Sequence {id_attr},
+			ownedOperation <- Sequence {id_getter}
 		),
 		id_attr: UML!Property(
 			name <- 'id',
-			type <- thisModule.IntegerType
+			type <- thisModule.IntegerType,
+			visibility <- #private
+		),
+		id_getter: UML!Operation(
+			name <- 'getId',
+			ownedParameter <- Sequence {id_getter_return_param}
+		),
+		id_getter_return_param: UML!Parameter(
+			direction <- #return,
+			type <- id_attr.type
 		),
 		entity_controller : UML!Class(
 			name <- entity.name.toPascalCase() + 'Controller',
 			ownedAttribute <- Sequence {
-					controller_repository_controller_end
-				}
+				controller_repository_controller_end
+			}
 		),
 		entity_repository : UML!Class(
 			name <- entity.name.toPascalCase() + 'Repository'
@@ -269,10 +370,11 @@ rule TransformEntity {
 			};
 			object_class.ownedAttribute <- entity.attribute
 				->collect(attr | thisModule.TransformAttribute(attr));
+			thisModule.AllArgConstructor(object_class);
+			object_class.ownedOperation <- entity.attribute->select(attr | attr.gettable)->collect(attr | thisModule.CreateGetter(object_class, attr));
+			object_class.ownedOperation <- entity.attribute->select(attr | attr.settable)->collect(attr | thisModule.CreateSetter(object_class, attr));
 			entity_controller.ownedOperation <- entity.operation
 				->collect(op | thisModule.TransformOperation(op));
 			thisModule.CommonRepositoryMethods(object_class, entity_repository);
 		}
 }
-
-
